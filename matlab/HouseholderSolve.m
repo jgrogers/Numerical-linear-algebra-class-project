@@ -7,7 +7,7 @@ function [R,QTb] = HouseholderSolve(A,b)
 [m,n] = size(A);
 R = A;
 QTb = b;
-for k=1:n
+for k=1:min(m,n)
     alpha = sign(R(k,k)) * sqrt(R(k:end,k)'*R(k:end,k));
     
     vk = R(:,k);
