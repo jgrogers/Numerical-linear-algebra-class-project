@@ -2,7 +2,7 @@ function odo = GenerateOdometry(traj_true)
 odo=  [];
 for i = 2:size(traj_true,2) 
     
-    n = gen_noise(3,0.01);
+    n = gen_noise(3,0.1);
     rel_odo = GetRelPose(traj_true(i-1), traj_true(i));
     odo(i-1).x = rel_odo.x + n(1);
     odo(i-1).y = rel_odo.y + n(2);

@@ -17,7 +17,7 @@ for i = 1:size(lm,2)
     lm_local = transform_to(pose, lm(i));
     if (inrange(lm_local, range))
         z(cnt) = measure(lm_local);
-        n = gen_noise(2,0.01);
+        n = gen_noise(2,0.3);
         z(cnt).range = z(cnt).range + n(1);
         z(cnt).bearing = z(cnt).bearing + n(2);
         da(cnt) = i;
@@ -34,13 +34,13 @@ n(2) = (rand(1,1) - 0.5)*scale;
 function lm_out = transform_to(pose, lm)
 dx = lm.x - pose.x;
 dy = lm.y - pose.y;
-lm_out.x = dx* cos(pose.theta) - dy * sin(pose.theta);
-lm_out.y = dx* sin(pose.theta) + dy * cos(pose.theta);
+lm_out.x = dx* cos(pose.theta) + dy * sin(pose.theta);
+lm_out.y = -dx* sin(pose.theta) + dy * cos(pose.theta);
 
 function t = inrange(lm_local, range)
 dist = sqrt(lm_local.x^2 + lm_local.y^2);
 t = dist < range;
 
 function m = measure(lm_local)
-m.range = sqrt(lm_local.x^2 + lm_local.y^2);
-m.bearing = atan2(lm_local.y, lm_local.x);
+m.range = lm_local.x;%sqrt(lm_local.x^2 + lm_local.y^2);
+m.bearing = lm_local.y;%atan2(lm_local.y, lm_local.x);
