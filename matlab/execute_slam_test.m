@@ -1,5 +1,6 @@
-function execute_slam_test(num_poses, num_landmarks, range, steps)
-
+function execute_slam_test(num_poses, num_landmarks, range, max_steps)
+lim_abs_err = 1e-10;
+lim_rel_err = 1e-10;
 lm_true = gen_rand_landmarks(num_landmarks,10);
 traj_true = GenerateTrajectory(num_poses);
 odo = GenerateOdometry(traj_true);
@@ -22,13 +23,18 @@ for (i = 1:size(lm_opt,2))
    lm_opt(i).y = rand(1,1)*15 -0.7; 
 end
 dispstate(xopt, lm_opt, da,traj_true,lm_true);
-for (i = 1:steps)
+prior_norm_dx = 1;
+for (i = 1:max_steps)
     [xopt, lm_opt,resid,dx] = OneStepGradient(xopt, lm_opt, odo, z, da);
     err(i) = resid;
     delta(:,i)= dx;
     figure
     dispstate(xopt, lm_opt, da,traj_true, lm_true);
-    
+    ndx = norm(dx);
+    if ndx < lim_abs_err || ndx / prior_norm_dx < lim_rel_err
+        break
+    end
+    prior_norm_dx = ndx;
 end
 figure 
 plot(err);
