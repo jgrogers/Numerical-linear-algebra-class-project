@@ -1,4 +1,4 @@
-function execute_slam_test(num_poses, num_landmarks, range, max_steps)
+function execute_slam_test_sparse(num_poses, num_landmarks, range, max_steps)
 tic
 lim_abs_err = 1e-10;
 lim_rel_err = 1e-10;
@@ -27,7 +27,7 @@ dispstate(xopt, lm_opt, da,traj_true,lm_true);
 prior_norm_dx = 1;
 density = 0;
 for (i = 1:max_steps)
-    [xopt, lm_opt,resid,dx,density] = OneStepGradient(xopt, lm_opt, odo, z, da);
+    [xopt, lm_opt,resid,dx,density] = OneStepGradientSparse(xopt, lm_opt, odo, z, da);
     err(i) = resid;
     delta(:,i)= dx;
     figure

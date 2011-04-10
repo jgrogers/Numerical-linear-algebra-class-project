@@ -1,4 +1,4 @@
-function [trajout, lmout,resid,dx,density] = OneStepGradient(traj, lm, odo, z, da)
+function [trajout, lmout,resid,dx,density] = OneStepGradientSparse(traj, lm, odo, z, da)
 
 %assume I have range bearing measurements on some landmarks
 %da is ground truth data association
@@ -22,12 +22,11 @@ odo_meas = size(odo,2);
 
 m = total_meas*2+3 + odo_meas*3;
 n = numposeidx + landmark_index_counter-1;
-A = zeros(m,n);
+%A = zeros(m,n);
 H = zeros(m,1);
 %H = spalloc(m, 1, m);%zeros(total_meas*2+3+odo_meas*3,1);
-%alloc_size = 3+9*(odo_meas+1) + 6 * total_meas
-
-%A = spalloc(m,n,alloc_size);
+alloc_size = 3+9*(odo_meas+1) + 6 * total_meas;
+A = spalloc(m,n,alloc_size);
 A(1:3,1:3) = -eye(3,3) * 10000;
 zeropose.x = 0;
 zeropose.y = 0;
@@ -63,9 +62,9 @@ density = nnz(A)/(m*n);
 %spy(A)
 
 %solve for the correction for error
-dx = linear_qr_solve(A, H);
+%dx = linear_qr_solve(A, H);
 %[q,r] = qr(A);
-%dx = linear_qr_solve_sparse(A,H);
+dx = linear_qr_solve_sparse(A,H);
 %dx = inv(r'*r)*r'*q'*H;
 %dx = tri_solve(r, q'*H)
 %Now, apply the correction to the trajectory and the landmarks

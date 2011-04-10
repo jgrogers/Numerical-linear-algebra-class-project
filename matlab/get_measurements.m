@@ -1,10 +1,12 @@
-function [z, da] = get_measurements(lm, posearr, range)
+function [z, da,meascnt] = get_measurements(lm, posearr, range)
 z = {};
 da = {};
+meascnt = 0;
 for i = 1:size(posearr,2)
     [zi, dai] = get_measurement(lm, posearr(i), range);
     z{i} = zi;
     da{i} = dai;
+    meascnt = meascnt + size(dai,2);
 end
 
 
