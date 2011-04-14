@@ -10,9 +10,9 @@ probsz = meascnt + size(odo,2);
 for i = 1:size(traj_true,2)
    [traj_true(i)]
    xini(i) = traj_true(i);
-   xini(i).x = rand(1,1)*0.5-0.25;
-   xini(i).y = rand(1,1)*0.5-0.25;
-   xini(i).theta = rand(1,1)*0.1-0.05;
+   xini(i).x = xini(i).x + rand(1,1)*0.5-0.25;
+   xini(i).y = xini(i).y + rand(1,1)*0.5-0.25;
+   xini(i).theta = xini(i).theta + rand(1,1)*0.1-0.05;
 end
 xini(1).x = 0;
 xini(1).y = 0;
@@ -20,8 +20,8 @@ xini(1).theta = 0;
 %xopt = traj_true;
 lm_ini = lm_true; 
 for (i = 1:size(lm_ini,2))
-   lm_ini(i).x = rand(1,1)*15 -0.7; 
-   lm_ini(i).y = rand(1,1)*15 -0.7; 
+   lm_ini(i).x = lm_ini(i).x + rand(1,1)*2 -0.7; 
+   lm_ini(i).y = lm_ini(i).y + rand(1,1)*2 -0.7; 
 end
 
 lm_opt = lm_ini;

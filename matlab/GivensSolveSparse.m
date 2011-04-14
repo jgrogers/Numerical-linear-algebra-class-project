@@ -1,6 +1,6 @@
-function [R, QTb] = GivensSolveSparse(A,b)
-
-R = [A b];
+function [R, QTb,P] = GivensSolveSparse(A,b)
+P = colamd(A);
+R = [A(:,P) b];
 [m,n] = size(R);
 %figure
 %spy(R);

@@ -1,9 +1,10 @@
 function X = linear_qr_solve_sparse(A, b)
 
-[R, QTb] = GivensSolveSparse(A,b);
+[R, QTb,P] = GivensSolveSparse(A,b);
 
-X = tri_solve(R, QTb);
-
+Y = tri_solve(R, QTb);
+Z(P)=Y;
+X = Z';
 
 
 function x = tri_solve(R, b)
