@@ -1,10 +1,14 @@
-function X = linear_qr_solve_sparse(A, b)
+function X = linear_qr_solve_sparse(A, b,usecolamd)
 
-[R, QTb,P] = GivensSolveSparse(A,b);
+[R, QTb,P] = GivensSolveSparse(A,b,usecolamd);
 
-Y = tri_solve(R, QTb);
-Z(P)=Y;
-X = Z';
+if usecolamd
+    Y = tri_solve(R, QTb);
+    Z(P)=Y;
+    X = Z';
+else
+   X = tri_solve(R,QTb); 
+end
 
 
 function x = tri_solve(R, b)

@@ -1,11 +1,17 @@
-function [R, QTb,P] = GivensSolveSparse(A,b)
-P = colamd(A);
-R = [A(:,P) b];
+function [R, QTb,P] = GivensSolveSparse(A,b,usecolamd)
+if usecolamd
+    P = colamd(A);
+    R = [A(:,P) b];
+else
+    R = [A b];
+    P = zeros(size(A,1));
+end
 [m,n] = size(R);
 %figure
 %spy(R);
 nu = 0;
 den = 0;
+gv= tic;
 for j=1:min(m,n)
     a = find(R(j+1:end,j));
     
@@ -35,6 +41,7 @@ for j=1:min(m,n)
         R(i,j) = 0;
     end
 end
+toc(gv);
 QTb = R(:,n);
 R = R(:,1:n-1);
 sprintf('Average number of entries to update per row %f out of %d\n', den/nu, n)
