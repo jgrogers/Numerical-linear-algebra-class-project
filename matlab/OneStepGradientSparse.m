@@ -25,8 +25,9 @@ n = numposeidx + landmark_index_counter-1;
 %A = zeros(m,n);
 H = zeros(m,1);
 %H = spalloc(m, 1, m);%zeros(total_meas*2+3+odo_meas*3,1);
-alloc_size = 3+9*(odo_meas+1) + 6 * total_meas;
-A = spalloc(m,n,alloc_size);
+%alloc_size = 3+9*(odo_meas+1) + 6 * total_meas;
+%A = spalloc(m,n,alloc_size);
+A = zeros(m,n);
 A(1:3,1:3) = -eye(3,3) * 10000;
 zeropose.x = 0;
 zeropose.y = 0;
@@ -55,18 +56,10 @@ for i = 1:size(traj,2)
         measidx = measidx + 2;
     end
 end
-A;
-H;
 density = (m*n);
-%figure
-%spy(A)
 
-%solve for the correction for error
-%dx = linear_qr_solve(A, H);
-%[q,r] = qr(A);
 dx = linear_qr_solve_sparse(A,H,usecolamd);
-%dx = inv(r'*r)*r'*q'*H;
-%dx = tri_solve(r, q'*H)
+
 %Now, apply the correction to the trajectory and the landmarks
 trajout = traj;
 lmout = lm;

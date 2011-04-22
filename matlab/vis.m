@@ -34,7 +34,20 @@ prior_norm_dx = 1;
 dispstate(xopt, lm_opt, da,traj_true, lm_true);
 
 d2 = 0;
-for (i = 1:max_steps)
+A = OneStepGradientSparse(xopt, lm_opt, odo, z, da);
+close all;
+figure
+spy(A);
+[m,n] = size(A);
+[q,r] = qr(A);
+figure
+spy(r(1:n,1:n));
+p = colamd(A);
+[q2,r2] = qr(A(:,p));
+figure
+spy(r2(1:n, 1:n));
+
+for (i = 1:0)
     [xopt, lm_opt,resid,dx,d2] = OneStepGradient(xopt, lm_opt, odo, z, da);
     err(i) = resid;
     delta(:,i)= dx;

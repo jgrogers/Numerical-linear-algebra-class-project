@@ -1,7 +1,7 @@
 function run_big_test()
 
 range = [];
-for i =(1:10)
+for i =(1:12)
     rang = 0.1 * i
     result = execute_slam_both(22,0.4,rang,20, i < 6);
     results(i) = result;

@@ -1,5 +1,5 @@
-function X = linear_qr_solve_sparse(A, b,usecolamd)
-
+function X = linear_qr_solve_sparse(Ad, b,usecolamd)
+A = sparse(Ad);
 [R, QTb,P] = GivensSolveSparse(A,b,usecolamd);
 
 if usecolamd
